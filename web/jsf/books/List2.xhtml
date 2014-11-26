@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+           
+        </ui:define>
+        <ui:define name="body">
+            <div >
+             <h:form id="myform"  >
+                 <h:inputText  binding="#{booksController.input1}"  value="#{booksController.bkName}" 
+                              
+                              title="Name" />
+                 <h:commandButton id="go" value="GO" action="#{booksController.input()}"  />
+            </h:form>
+            
+            <h:form id="list" styleClass="jsfcrud_list_form" >
+               <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListBooksEmpty}" rendered="#{booksController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{booksController.items.rowCount > 0}">
+                    <h:outputText value="#{booksController.pagination.pageFirstItem + 1}..#{booksController.pagination.pageLastItem + 1}/#{booksController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{booksController.previous}" value="#{bundle.Previous} #{booksController.pagination.pageSize}" rendered="#{booksController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{booksController.next}" value="#{bundle.Next} #{booksController.pagination.pageSize}" rendered="#{booksController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{booksController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListBooksTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListBooksTitle_name}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListBooksTitle_publisher}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.publisher}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListBooksTitle_publisherAddress}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.publisherAddress}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            
+                            <h:commandLink action="#{booksController.prepareEdit}" value="#{bundle.ListBooksEditLink}"
+                                           
+                                           />
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{booksController.destroy}" value="#{bundle.ListBooksDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{booksController.prepareCreate}" value="#{bundle.ListBooksCreateLink}"/>
+                <br />
+                
+            </h:form>
+                    
+                         
+            <h:form id="edit" rendered="#{booksController.showForm}">
+                
+                <h:panelGrid columns="4">
+                    <h:outputLabel value="#{bundle.EditBooksLabel_id}" for="id" />
+                    <h:outputLabel value="#{bundle.EditBooksLabel_name}" for="name" />
+                    <h:outputLabel value="#{bundle.EditBooksLabel_publisher}" for="publisher" />
+                    <h:outputLabel value="#{bundle.EditBooksLabel_publisherAddress}" for="publisherAddress" />
+                    <h:inputText id="id" value="#{booksController.selected.id}" title="#{bundle.EditBooksTitle_id}" required="true" requiredMessage="#{bundle.EditBooksRequiredMessage_id}"/>
+                    
+                    <h:inputText id="name" value="#{booksController.selected.name}" title="#{bundle.EditBooksTitle_name}" />
+                    
+                    <h:inputText id="publisher" value="#{booksController.selected.publisher}" title="#{bundle.EditBooksTitle_publisher}" />
+                    
+                    <h:inputText id="publisherAddress" value="#{booksController.selected.publisherAddress}" title="#{bundle.EditBooksTitle_publisherAddress}" />
+                </h:panelGrid>
+                <h:commandLink action="#{booksController.update}" value="Save"/>
+                
+            </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-web>
+  <context-root>/TestJSP_Security</context-root>
+  <security-domain>java:/jaas/ORAAuth</security-domain>
+  <disable-audit>true</disable-audit>
+</jboss-web>
